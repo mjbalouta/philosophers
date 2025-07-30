@@ -6,13 +6,13 @@
 #    By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/29 15:23:42 by mjoao-fr          #+#    #+#              #
-#    Updated: 2025/07/29 15:27:45 by mjoao-fr         ###   ########.fr        #
+#    Updated: 2025/07/30 15:53:04 by mjoao-fr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CFLAGS      = -Wall -Wextra -Werror -g
 NAME        = philo
-SRCS        = ./src-files/main.c ./src-files/handle_commands.c ./src-files/free_mem.c
+SRCS        = ./src/main.c ./src/handle_args.c ./src/utils.c
 OBJS        = $(SRCS:.c=.o)
 
 all: $(NAME)
