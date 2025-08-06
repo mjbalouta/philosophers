@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validations.c                                      :+:      :+:    :+:   */
+/*   handle_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:13:34 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/07/30 15:50:41 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/06 12:55:46 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/philo.h"
+#include "../include/philo.h"
 
 void	convert_args_to_numbers(char **av, t_data *data)
 {
@@ -27,10 +27,10 @@ int	detect_invalid_char(int ac, char **av)
 	int	i;
 	int	z;
 
-	i = 0;
-	z = 0;
-	while (i < (ac - 1))
+	i = 1;
+	while (i < ac)
 	{
+		z = 0;
 		while (av[i][z])
 		{
 			if (!(av[i][z] >= '0' && av[i][z] <= '9'))
@@ -47,4 +47,5 @@ int	handle_args(int ac, char **av, t_data *data)
 	if (detect_invalid_char(ac, av) == -1)
 		return (-1);
 	convert_args_to_numbers(av, data);
+	return (0);
 }
