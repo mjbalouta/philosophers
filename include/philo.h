@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/06 12:45:42 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/07 12:11:46 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_H
 
 # include <unistd.h>
+# include <pthread.h>
 
 typedef struct s_data
 {
