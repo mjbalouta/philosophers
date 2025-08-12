@@ -6,13 +6,13 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/07 15:39:32 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:47:41 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	philo_brainrot(t_data *data)
+void	routine(t_data *data)
 {
 	
 }
@@ -23,7 +23,7 @@ void	handle_threads(int ac, t_data *data)
 
 	while (ac > 0)
 	{
-		if (pthread_create(&id, NULL, philo_brainrot, data) != 0)
+		if (pthread_create(&id, NULL, routine, data) != 0)
 			return (write(2, "Error creating thread.\n", 23)); 
 		pthread_join(&id, NULL);
 	}

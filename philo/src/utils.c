@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:34:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/07 11:39:58 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/11 11:36:08 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,60 @@ long	ft_atoi(const char *nptr)
 	if (negative == 1)
 		return (-num);
 	return (num);
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	long	num;
+	char	array[10];
+	int		i;
+
+	num = n;
+	i = 0;
+	if (num == 0)
+		write (fd, "0", 1);
+	if (num < 0)
+	{
+		num = -num;
+		write(fd, "-", 1);
+	}
+	while (num > 0)
+	{
+		array[i] = (num % 10) + '0';
+		num = num / 10;
+		i++;
+	}
+	i = i - 1;
+	while (i >= 0)
+		write(fd, &array[i--], 1);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+void	print_log(int philo_id, char *str)
+{
+	size_t	size;
+	
+	size = ft_strlen(str);
+	ft_putnbr_fd(philo_id, 1);
+	write(1, &str, size);
+	write(1, "\n", 1);
+}
+
+void	free_data(t_data *data)
+{
+	if (data->philo_id)
+		free(data->philo_id);
+	if (data->forks)
+		free(data->forks);
 }

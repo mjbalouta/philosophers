@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/07 12:11:46 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/12 16:34:24 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,44 @@
 
 # include <unistd.h>
 # include <pthread.h>
+# include <stdlib.h>
+# include <sys/time.h>
 
 typedef struct s_data
 {
-	int	nr_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int time_to_sleep;
-	int	nr_meals;
+	int				nr_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				nr_meals;
+	pthread_mutex_t	*forks;
+	int				stop;
+	int				meals_defined;	
+	long			start_time;	
 }				t_data;
 
 
+typedef struct s_philo
+{
+	int			philo_id;
+	long		last_meal;
+	int			ate;
+	t_data		*data;
+	
+}				t_philo;
+
+void	initialize_philo_struct(t_data *data, t_philo *philo);
+int		convert_initialize_data(char **av, t_data *data);
 int		handle_args(int ac, char **av, t_data *data);
 long	ft_atoi(const char *nptr);
+void	ft_putnbr_fd(int n, int fd);
+size_t	ft_strlen(const char *s);
+void	print_log(int philo_id, char *str);
 int		detect_invalid_char(int ac, char **av);
+void	handle_threads(t_data *data);
+void	*routine(t_data *data);
+void	eating(t_data *data);
+void	*monitoring(t_data *data);
+void	free_data(t_data *data);
 
 #endif
