@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:34:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/19 14:23:02 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/19 23:20:59 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,22 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-void	print_log(int philo_id, char *str)
+void	print_log(int philo_id, char *str, t_data *data)
 {
-	size_t	size;
+	size_t			size;
+	struct timeval	current_time;
+	long			time_passed;
 	
+	gettimeofday(&current_time, NULL);
+	time_passed = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000)) - data->start_time;
+	pthread_mutex_lock(&data->write_mutex);
 	size = ft_strlen(str);
+	ft_putnbr_fd(time_passed, 1);
+	write(1, " ", 1);
 	ft_putnbr_fd(philo_id, 1);
 	write(1, str, size);
 	write(1, "\n", 1);
+	pthread_mutex_unlock(&data->write_mutex);
 }
 
 // void	free_data(t_data *data)

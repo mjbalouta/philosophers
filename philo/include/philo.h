@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/19 14:21:56 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/19 23:23:34 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <stdio.h>
 
 typedef struct s_data
 {
@@ -26,6 +27,7 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				nr_meals;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	write_mutex;
 	int				stop;
 	int				meals_defined;	
 	long			start_time;	
@@ -46,7 +48,7 @@ int		handle_args(int ac, char **av, t_data *data);
 long	ft_atoi(const char *nptr);
 void	ft_putnbr_fd(int n, int fd);
 size_t	ft_strlen(const char *s);
-void	print_log(int philo_id, char *str);
+void	print_log(int philo_id, char *str, t_data *data);
 int		detect_invalid_char(int ac, char **av);
 int		handle_threads(t_data *data);
 void	*routine(void *arg);
