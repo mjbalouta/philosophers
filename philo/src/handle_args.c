@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:13:34 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/13 14:50:01 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/19 14:49:43 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	init_data(char **av, t_data *data)
 	gettimeofday(&current_time, NULL);
 	data->nr_philos = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
+	if (data->nr_philos <= 0 || data->time_to_die <= 0)
+		return (-1);
 	data->time_to_eat = ft_atoi(av[3]);
 	data->time_to_sleep = ft_atoi(av[4]);
 	data->meals_defined = 0;
-	if (data->nr_philos <= 0 || data->time_to_die <= 0)
-		return (-1);
 	if (av[5])
 	{
 		data->meals_defined = 1;

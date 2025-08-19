@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/13 17:29:52 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/19 14:55:44 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	*routine(void *arg)
 		usleep(philo->data->time_to_sleep * 1000);
 		print_log(philo->philo_id, " is thinking");
 	}
-	return NULL;
+	return (NULL);
 }
 
-void	handle_threads(t_data *data)
+int	handle_threads(t_data *data)
 {
 	int			i;
 	pthread_t	*ids;
@@ -43,20 +43,20 @@ void	handle_threads(t_data *data)
 	while (++i < data->nr_philos)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (free_data(data), write(2, "Mutex error.\n", 13));	
+			return (write(2, "Mutex error.\n", 13));	
 	}
 	i = -1;
 	while (++i < data->nr_philos)
 	{
 		philos[i].data = philos->data;
 		philos[i].ate = 0;
-		philos[i].last_meal = philos->data->start_time;
+		philos[i].last_meal = data->start_time;
 		philos[i].philo_id = i;
 		if (pthread_create(&ids[i], NULL, routine, &philos[i]) != 0)
-			return (free_data(data), write(2, "Error creating thread.\n", 23));
+			return (write(2, "Error creating thread.\n", 23));
 	}
 	if (pthread_create(&ids[i], NULL, monitoring, philos) != 0)
-		return (free_data(data), write(2, "Error creating thread.\n", 23));
+		return (write(2, "Error creating thread.\n", 23));
 	i = 0;
 	while (i < data->nr_philos + 1)
 	{
@@ -69,6 +69,7 @@ void	handle_threads(t_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
+	return (0);
 }
 
 int	main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:34:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/12 17:07:48 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/19 14:23:02 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ void	print_log(int philo_id, char *str)
 	write(1, "\n", 1);
 }
 
-void	free_data(t_data *data)
-{
-	if (data->philo_id)
-		free(data->philo_id);
-	if (data->forks)
-		free(data->forks);
-}
+// void	free_data(t_data *data)
+// {
+// 	if (data->philo_id)
+// 		free(data->philo_id);
+// 	if (data->forks)
+// 		free(data->forks);
+// }

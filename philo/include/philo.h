@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/13 14:41:37 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/19 14:21:56 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	ft_putnbr_fd(int n, int fd);
 size_t	ft_strlen(const char *s);
 void	print_log(int philo_id, char *str);
 int		detect_invalid_char(int ac, char **av);
-void	handle_threads(t_data *data);
-void	*routine(t_data *data);
-void	eating(t_data *data);
-void	*monitoring(t_data *data);
+int		handle_threads(t_data *data);
+void	*routine(void *arg);
+void	eating(t_philo *philo);
+void	*monitoring(void *arg);
 void	free_data(t_data *data);
 
 #endif
