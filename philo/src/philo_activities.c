@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 20:50:10 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/12 16:40:07 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:29:42 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	*monitoring(void *arg)
 	int	i;
 	
 	philo = (t_philo *)arg;
-	i = 0;
 	while (1)
 	{
+		i = 0;
 		while(philo->data->stop == 0)
 		{
 			gettimeofday(&current_time, NULL);

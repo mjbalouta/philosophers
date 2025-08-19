@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/12 16:34:24 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/13 14:41:37 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ typedef struct s_philo
 	
 }				t_philo;
 
-void	initialize_philo_struct(t_data *data, t_philo *philo);
-int		convert_initialize_data(char **av, t_data *data);
+int		init_data(char **av, t_data *data);
 int		handle_args(int ac, char **av, t_data *data);
 long	ft_atoi(const char *nptr);
 void	ft_putnbr_fd(int n, int fd);

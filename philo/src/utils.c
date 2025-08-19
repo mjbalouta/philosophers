@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:34:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/11 11:36:08 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/12 17:07:48 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	print_log(int philo_id, char *str)
 	
 	size = ft_strlen(str);
 	ft_putnbr_fd(philo_id, 1);
-	write(1, &str, size);
+	write(1, str, size);
 	write(1, "\n", 1);
 }
 
