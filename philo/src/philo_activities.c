@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 20:50:10 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/19 23:44:49 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/20 21:06:04 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	eating(t_philo *philo)
 		pthread_mutex_lock(&philo->data->forks[left]);
 		print_log(philo->philo_id + 1, " has taken a fork", philo->data);
 		pthread_mutex_unlock(&philo->data->forks[left]);
-		usleep(philo->data->time_to_die);
+		usleep(philo->data->time_to_die * 1000);
 		print_log(philo->philo_id + 1, " died", philo->data);
 		philo->data->stop = 1;
 		return ;
