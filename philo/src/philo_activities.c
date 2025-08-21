@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 20:50:10 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/20 21:46:39 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/21 09:39:54 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,10 @@ int	verify_if_all_ate(t_philo *philo)
 				return (0);
 			z++;
 		}	
+		philo[0].data->stop = 1;
+		return (-1);
 	}
-	philo[0].data->stop = 1;
-	return (-1);
+	return (0);
 }
 
 void	*monitoring(void *arg)
