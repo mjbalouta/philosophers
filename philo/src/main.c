@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/19 23:38:50 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:39:42 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	*routine(void *arg)
 	t_philo *philo;
 
 	philo = (t_philo *)arg;
+	if (philo->philo_id % 2 == 0)
+		usleep(1000);
 	while (philo->data->stop == 0)
 	{
 		eating(philo);
@@ -27,6 +29,8 @@ void	*routine(void *arg)
 		if (philo->data->stop == 1)
             return (NULL);
 		print_log(philo->philo_id + 1, " is thinking", philo->data);
+		if (philo->data->nr_philos % 2 != 0 && philo->philo_id % 2 != 0)
+			usleep(1000);
 	}
 	return (NULL);
 }
