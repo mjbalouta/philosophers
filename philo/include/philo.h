@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 17:18:24 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:30:30 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ void	destroy_mutexes(t_data *data, t_philo *philos);
 int		create_threads(t_data *data, t_philo *philos, pthread_t	*ids, pthread_t *mon_id);
 void	join_threads(t_data *data, pthread_t *ids, pthread_t *mon_id);
 int		check_stop(t_philo *philo);
+long	get_timestamp();
 
 #endif

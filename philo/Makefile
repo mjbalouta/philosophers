@@ -6,13 +6,13 @@
 #    By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/29 15:23:42 by mjoao-fr          #+#    #+#              #
-#    Updated: 2025/08/22 11:53:02 by mjoao-fr         ###   ########.fr        #
+#    Updated: 2025/08/22 17:32:01 by mjoao-fr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CFLAGS      = -Wall -Wextra -Werror -g
 NAME        = philo
-SRCS        = ./src/main.c ./src/handle_args.c ./src/utils.c ./src/philo_activities.c ./src/thread_utils.c
+SRCS        = ./src/main.c ./src/handle_args.c ./src/utils.c ./src/philo_activities.c ./src/manage_threads.c ./src/thread_utils.c 
 OBJS        = $(SRCS:.c=.o)
 
 all: $(NAME)

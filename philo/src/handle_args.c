@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:13:34 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 16:33:55 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:33:24 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	init_data(char **av, t_data *data)
 {
-	struct timeval current_time;
-	
-	gettimeofday(&current_time, NULL);
 	data->nr_philos = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
 	if (data->nr_philos <= 0 || data->time_to_die <= 0)
@@ -37,9 +34,7 @@ int	init_data(char **av, t_data *data)
 	if (!data->forks)
 		return (-2);
 	data->stop = 0;
-	data->start_time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
-	// printf("Start time:   %ld\n", data->start_time);
-	// printf("Current time: %ld\n", (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
+	data->start_time = get_timestamp();
 	return (0);
 }
 

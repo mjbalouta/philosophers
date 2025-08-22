@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:34:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 17:18:06 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:31:25 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	print_log(int philo_id, char *str, t_data *data)
 	long			time_passed;
 	
 	gettimeofday(&current_time, NULL);
-	time_passed = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000)) - data->start_time;
+	time_passed = (get_timestamp()) - data->start_time;
 	pthread_mutex_lock(&data->write_mutex);
 	size = ft_strlen(str);
 	ft_putnbr_fd(time_passed, 1);

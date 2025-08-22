@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 20:50:10 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 17:27:16 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:33:40 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	eating(t_philo *philo)
 {
-	struct timeval current_time;
 	int	left;
 	int	right;
 
@@ -48,9 +47,8 @@ void	eating(t_philo *philo)
 			return ;
 		pthread_mutex_lock(&philo->data->forks[left]);
 	}
-	gettimeofday(&current_time, NULL);
 	pthread_mutex_lock(&philo->meal_mutex);
-	philo->last_meal = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
+	philo->last_meal = get_timestamp();
 	philo->ate++;
 	pthread_mutex_unlock(&philo->meal_mutex);
 	if (check_stop(philo) == -1)
@@ -91,7 +89,6 @@ int	verify_if_all_ate(t_philo *philo)
 void	*monitoring(void *arg)
 {
 	t_philo	*philo;
-	struct timeval current_time;
 	long time_passed;
 	int	i;
 	
@@ -103,9 +100,8 @@ void	*monitoring(void *arg)
 		i = -1;
 		while(++i < philo[0].data->nr_philos)
 		{
-			gettimeofday(&current_time, NULL);
 			pthread_mutex_lock(&philo[i].meal_mutex);
-			time_passed = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000)) - philo[i].last_meal;
+			time_passed = (get_timestamp()) - philo[i].last_meal;
 			pthread_mutex_unlock(&philo[i].meal_mutex);
 			if (time_passed > philo[i].data->time_to_die)
 			{
