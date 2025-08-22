@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 20:50:10 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 16:38:01 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:27:16 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,38 @@ void	eating(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->forks[left]);
 		usleep(philo->data->time_to_die * 1000);
 		print_log(philo->philo_id + 1, " died", philo->data);
-		pthread_mutex_unlock(&philo->data->stop_mutex);
-		philo->data->stop = 1;
 		pthread_mutex_lock(&philo->data->stop_mutex);
+		philo->data->stop = 1;
+		pthread_mutex_unlock(&philo->data->stop_mutex);
 		return ;
 	}
 	if (philo->philo_id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->data->forks[left]);
 		print_log(philo->philo_id + 1, " has taken a fork", philo->data);
+		if (check_stop(philo) == -1)
+			return ;
 		pthread_mutex_lock(&philo->data->forks[right]);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->data->forks[right]);
 		print_log(philo->philo_id + 1, " has taken a fork", philo->data);
+		if (check_stop(philo) == -1)
+			return ;
 		pthread_mutex_lock(&philo->data->forks[left]);
 	}
 	gettimeofday(&current_time, NULL);
-	pthread_mutex_lock(&philo->data->meal_mutex);
+	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
 	philo->ate++;
-	pthread_mutex_unlock(&philo->data->meal_mutex);
+	pthread_mutex_unlock(&philo->meal_mutex);
+	if (check_stop(philo) == -1)
+		return ;
 	print_log(philo->philo_id + 1, " has taken a fork", philo->data);
 	print_log(philo->philo_id + 1, " is eating", philo->data);
+	if (check_stop(philo) == -1)
+		return ;
 	usleep(philo->data->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->data->forks[left]);
 	pthread_mutex_unlock(&philo->data->forks[right]);
@@ -65,13 +73,13 @@ int	verify_if_all_ate(t_philo *philo)
 	{
 		while (z < philo[0].data->nr_philos)
 		{
-			pthread_mutex_lock(&philo[0].data->meal_mutex);
+			pthread_mutex_lock(&philo[z].meal_mutex);
 			if (philo[0].data->nr_meals > philo[z].ate)
 			{
-				pthread_mutex_unlock(&philo[0].data->meal_mutex);
+				pthread_mutex_unlock(&philo[z].meal_mutex);
 				return (0);
 			}
-			pthread_mutex_unlock(&philo[0].data->meal_mutex);
+			pthread_mutex_unlock(&philo[z].meal_mutex);
 			z++;
 		}	
 		philo[0].data->stop = 1;
@@ -88,7 +96,7 @@ void	*monitoring(void *arg)
 	int	i;
 	
 	philo = (t_philo *)arg;
-	if (philo[0].data->nr_philos == 1)
+	if (check_stop(philo) == -1)
 		return (NULL);
 	while (philo[0].data->stop == 0)
 	{
@@ -96,15 +104,15 @@ void	*monitoring(void *arg)
 		while(++i < philo[0].data->nr_philos)
 		{
 			gettimeofday(&current_time, NULL);
-			pthread_mutex_lock(&philo[0].data->meal_mutex);
+			pthread_mutex_lock(&philo[i].meal_mutex);
 			time_passed = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000)) - philo[i].last_meal;
-			pthread_mutex_unlock(&philo[0].data->meal_mutex);
+			pthread_mutex_unlock(&philo[i].meal_mutex);
 			if (time_passed > philo[i].data->time_to_die)
 			{
 				pthread_mutex_lock(&philo[0].data->stop_mutex);
 				philo[0].data->stop = 1;
-				print_log(philo[i].philo_id + 1, " died", philo[0].data);
 				pthread_mutex_unlock(&philo[0].data->stop_mutex);
+				print_log(philo[i].philo_id + 1, " died", philo[0].data);
 				return (NULL);
 			}
 		}

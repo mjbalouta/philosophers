@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 16:22:27 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:19:22 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,17 @@ void	*routine(void *arg)
 	while (philo->data->stop == 0)
 	{
 		pthread_mutex_unlock(&philo->data->stop_mutex);
+		if (check_stop(philo) == -1)
+			return (NULL);
 		eating(philo);
-		pthread_mutex_lock(&philo->data->stop_mutex);
-		if (philo->data->stop == 1)
-		{
-			pthread_mutex_unlock(&philo->data->stop_mutex);
-            return (NULL);
-		}
-		pthread_mutex_unlock(&philo->data->stop_mutex);
+		if (check_stop(philo) == -1)
+			return (NULL);
 		print_log(philo->philo_id + 1, " is sleeping", philo->data);
+		if (check_stop(philo) == -1)
+			return (NULL);
 		usleep(philo->data->time_to_sleep * 1000);
-		pthread_mutex_lock(&philo->data->stop_mutex);
-		if (philo->data->stop == 1)
-		{
-			pthread_mutex_unlock(&philo->data->stop_mutex);
-            return (NULL);
-		}
-		pthread_mutex_unlock(&philo->data->stop_mutex);
+		if (check_stop(philo) == -1)
+			return (NULL);
 		print_log(philo->philo_id + 1, " is thinking", philo->data);
 		if (philo->data->nr_philos % 2 != 0 && philo->philo_id % 2 != 0)
 			usleep(1000);
@@ -60,12 +54,13 @@ int	handle_threads(t_data *data)
 	philos = malloc(sizeof(t_philo) * data->nr_philos);
 	if (!philos)
 		return (-1);
-	if (create_mutexes(data) != 0)
+	if (create_mutexes(data, philos) != 0)
 		return (-2);
 	if (create_threads(data, philos, ids, &mon_id) != 0)
 		return (-2);
 	join_threads(data, ids, &mon_id);
-	destroy_mutexes(data);
+	destroy_mutexes(data, philos);
+	free(philos);
 	return (0);
 }
 

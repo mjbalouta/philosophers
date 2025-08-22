@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:34:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 16:37:50 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:18:06 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,18 @@ void	print_log(int philo_id, char *str, t_data *data)
 	write(1, str, size);
 	write(1, "\n", 1);
 	pthread_mutex_unlock(&data->write_mutex);
+}
+
+int	check_stop(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->stop_mutex);
+	if (philo->data->stop == 1)
+	{
+		pthread_mutex_unlock(&philo->data->stop_mutex);
+        return (-1);
+	}
+	pthread_mutex_unlock(&philo->data->stop_mutex);
+	return (0);
 }
 
 // void	free_data(t_data *data)

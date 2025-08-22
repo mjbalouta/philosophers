@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 16:16:48 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 17:18:24 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_data
 	int				nr_meals;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	write_mutex;
-	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	stop_mutex;
 	int				stop;
 	int				meals_defined;	
@@ -39,6 +38,7 @@ typedef struct s_data
 typedef struct s_philo
 {
 	int				philo_id;
+	pthread_mutex_t	meal_mutex;
 	long			last_meal;
 	int				ate;
 	t_data			*data;
@@ -57,9 +57,10 @@ void	*routine(void *arg);
 void	eating(t_philo *philo);
 void	*monitoring(void *arg);
 void	free_data(t_data *data);
-int		create_mutexes(t_data *data);
-void	destroy_mutexes(t_data *data);
+int		create_mutexes(t_data *data, t_philo *philos);
+void	destroy_mutexes(t_data *data, t_philo *philos);
 int		create_threads(t_data *data, t_philo *philos, pthread_t	*ids, pthread_t *mon_id);
 void	join_threads(t_data *data, pthread_t *ids, pthread_t *mon_id);
+int		check_stop(t_philo *philo);
 
 #endif
