@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/21 14:39:42 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 16:22:27 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,37 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->philo_id % 2 == 0)
 		usleep(1000);
+	pthread_mutex_lock(&philo->data->stop_mutex);
 	while (philo->data->stop == 0)
 	{
+		pthread_mutex_unlock(&philo->data->stop_mutex);
 		eating(philo);
+		pthread_mutex_lock(&philo->data->stop_mutex);
 		if (philo->data->stop == 1)
+		{
+			pthread_mutex_unlock(&philo->data->stop_mutex);
             return (NULL);
+		}
+		pthread_mutex_unlock(&philo->data->stop_mutex);
 		print_log(philo->philo_id + 1, " is sleeping", philo->data);
 		usleep(philo->data->time_to_sleep * 1000);
+		pthread_mutex_lock(&philo->data->stop_mutex);
 		if (philo->data->stop == 1)
+		{
+			pthread_mutex_unlock(&philo->data->stop_mutex);
             return (NULL);
+		}
+		pthread_mutex_unlock(&philo->data->stop_mutex);
 		print_log(philo->philo_id + 1, " is thinking", philo->data);
 		if (philo->data->nr_philos % 2 != 0 && philo->philo_id % 2 != 0)
 			usleep(1000);
 	}
+	pthread_mutex_unlock(&philo->data->stop_mutex);
 	return (NULL);
 }
 
 int	handle_threads(t_data *data)
 {
-	int			i;
 	pthread_t	*ids;
 	t_philo		*philos;
 	pthread_t	mon_id;
@@ -48,41 +60,12 @@ int	handle_threads(t_data *data)
 	philos = malloc(sizeof(t_philo) * data->nr_philos);
 	if (!philos)
 		return (-1);
-	i = -1;
-	while (++i < data->nr_philos)
-	{
-		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-			return (write(2, "Mutex error.\n", 13));	
-	}
-	if (pthread_mutex_init(&data->write_mutex, NULL) != 0)
-        return (write(2, "Mutex error.\n", 13));
-	i = -1;
-	while (++i < data->nr_philos)
-	{
-		philos[i].data = data;
-		philos[i].data->stop = 0;
-		philos[i].ate = 0;
-		philos[i].last_meal = data->start_time;
-		philos[i].philo_id = i;
-		if (pthread_create(&ids[i], NULL, routine, &philos[i]) != 0)
-			return (write(2, "Error creating thread.\n", 23));
-	}
-	if (pthread_create(&mon_id, NULL, monitoring, philos) != 0)
-		return (write(2, "Error creating thread.\n", 23));
-	i = 0;
-	while (i < data->nr_philos)
-	{
-		pthread_join(ids[i], NULL);
-		i++;
-	}
-	pthread_join(mon_id, NULL);
-	i = 0;
-	while (i < data->nr_philos)
-	{
-		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&data->write_mutex);
+	if (create_mutexes(data) != 0)
+		return (-2);
+	if (create_threads(data, philos, ids, &mon_id) != 0)
+		return (-2);
+	join_threads(data, ids, &mon_id);
+	destroy_mutexes(data);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 20:50:10 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/21 14:31:42 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/08/22 16:38:01 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ void	eating(t_philo *philo)
 		pthread_mutex_unlock(&philo->data->forks[left]);
 		usleep(philo->data->time_to_die * 1000);
 		print_log(philo->philo_id + 1, " died", philo->data);
+		pthread_mutex_unlock(&philo->data->stop_mutex);
 		philo->data->stop = 1;
+		pthread_mutex_lock(&philo->data->stop_mutex);
 		return ;
 	}
 	if (philo->philo_id % 2 == 0)
@@ -43,8 +45,10 @@ void	eating(t_philo *philo)
 		pthread_mutex_lock(&philo->data->forks[left]);
 	}
 	gettimeofday(&current_time, NULL);
+	pthread_mutex_lock(&philo->data->meal_mutex);
 	philo->last_meal = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000));
 	philo->ate++;
+	pthread_mutex_unlock(&philo->data->meal_mutex);
 	print_log(philo->philo_id + 1, " has taken a fork", philo->data);
 	print_log(philo->philo_id + 1, " is eating", philo->data);
 	usleep(philo->data->time_to_eat * 1000);
@@ -61,9 +65,13 @@ int	verify_if_all_ate(t_philo *philo)
 	{
 		while (z < philo[0].data->nr_philos)
 		{
-			// printf("%d\n", philo[0].data->nr_meals);
+			pthread_mutex_lock(&philo[0].data->meal_mutex);
 			if (philo[0].data->nr_meals > philo[z].ate)
+			{
+				pthread_mutex_unlock(&philo[0].data->meal_mutex);
 				return (0);
+			}
+			pthread_mutex_unlock(&philo[0].data->meal_mutex);
 			z++;
 		}	
 		philo[0].data->stop = 1;
@@ -84,21 +92,21 @@ void	*monitoring(void *arg)
 		return (NULL);
 	while (philo[0].data->stop == 0)
 	{
-		i = 0;
-		while(i < philo[0].data->nr_philos)
+		i = -1;
+		while(++i < philo[0].data->nr_philos)
 		{
 			gettimeofday(&current_time, NULL);
+			pthread_mutex_lock(&philo[0].data->meal_mutex);
 			time_passed = ((current_time.tv_sec * 1000) + (current_time.tv_usec / 1000)) - philo[i].last_meal;
-			if (time_passed > philo[0].data->time_to_die)
+			pthread_mutex_unlock(&philo[0].data->meal_mutex);
+			if (time_passed > philo[i].data->time_to_die)
 			{
-				// printf("Last Meal: %ld\n", philo[i].last_meal);
-				// printf("Time Passed: %ld\n", time_passed);
-				// printf("Time to Die: %d\n", philo[0].data->time_to_die);
+				pthread_mutex_lock(&philo[0].data->stop_mutex);
 				philo[0].data->stop = 1;
 				print_log(philo[i].philo_id + 1, " died", philo[0].data);
+				pthread_mutex_unlock(&philo[0].data->stop_mutex);
 				return (NULL);
 			}
-			i++;
 		}
 		if (verify_if_all_ate(philo) == -1)
 			return (NULL);
