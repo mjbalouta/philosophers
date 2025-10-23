@@ -6,7 +6,7 @@
 #    By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/29 15:23:42 by mjoao-fr          #+#    #+#              #
-#    Updated: 2025/08/22 17:32:01 by mjoao-fr         ###   ########.fr        #
+#    Updated: 2025/10/23 12:07:03 by mjoao-fr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS        = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@echo "Compiling philosophers..."
+	@echo "Philosophers compiled."
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 %.o: %.c

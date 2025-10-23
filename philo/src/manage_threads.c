@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   thread_utils.c                                     :+:      :+:    :+:   */
+/*   manage_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 11:52:03 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 17:04:01 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/23 16:18:48 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	create_mutexes(t_data *data, t_philo *philos)
 	while (i < data->nr_philos)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
-		return (write(2, "Mutex error.\n", 13));
+			return (write(2, "Mutex error.\n", 13));
 		i++;	
 	}
 	if (pthread_mutex_init(&data->write_mutex, NULL) != 0)

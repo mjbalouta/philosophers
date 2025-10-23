@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 17:19:22 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/23 16:45:25 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	*routine(void *arg)
 		print_log(philo->philo_id + 1, " is thinking", philo->data);
 		if (philo->data->nr_philos % 2 != 0 && philo->philo_id % 2 != 0)
 			usleep(1000);
+		pthread_mutex_lock(&philo->data->stop_mutex);
 	}
 	pthread_mutex_unlock(&philo->data->stop_mutex);
 	return (NULL);

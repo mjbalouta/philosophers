@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/08/22 17:30:30 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/23 16:35:52 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef struct s_data
 
 typedef struct s_philo
 {
+	int				right_fork;
+	int				left_fork;
 	int				philo_id;
 	pthread_mutex_t	meal_mutex;
 	long			last_meal;
@@ -50,7 +52,8 @@ int		handle_args(int ac, char **av, t_data *data);
 long	ft_atoi(const char *nptr);
 void	ft_putnbr_fd(int n, int fd);
 size_t	ft_strlen(const char *s);
-void	print_log(int philo_id, char *str, t_data *data);
+int		check_and_print_log(int philo_id, char *str, t_philo *philo);
+int		print_log(int philo_id, char *str, t_data *data);
 int		detect_invalid_char(int ac, char **av);
 int		handle_threads(t_data *data);
 void	*routine(void *arg);
