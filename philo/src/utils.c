@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:34:35 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/23 16:36:24 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:49:06 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,47 +78,15 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-int	check_and_print_log(int philo_id, char *str, t_philo *philo)
+int	check_and_print(int philo_id, char *str, t_philo *philo)
 {
-	size_t			size;
-	struct timeval	current_time;
-	long			time_passed;
-	
 	if (check_stop(philo) == -1)
 	{
 		pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
 		pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
 		return (1);
 	}
-	gettimeofday(&current_time, NULL);
-	time_passed = (get_timestamp()) - philo->data->start_time;
-	pthread_mutex_lock(&philo->data->write_mutex);
-	size = ft_strlen(str);
-	ft_putnbr_fd(time_passed, 1);
-	write(1, " ", 1);
-	ft_putnbr_fd(philo_id, 1);
-	write(1, str, size);
-	write(1, "\n", 1);
-	pthread_mutex_unlock(&philo->data->write_mutex);
-	return (0);
-}
-
-int	print_log(int philo_id, char *str, t_data *data)
-{
-	size_t			size;
-	struct timeval	current_time;
-	long			time_passed;
-	
-	gettimeofday(&current_time, NULL);
-	time_passed = (get_timestamp()) - data->start_time;
-	pthread_mutex_lock(&data->write_mutex);
-	size = ft_strlen(str);
-	ft_putnbr_fd(time_passed, 1);
-	write(1, " ", 1);
-	ft_putnbr_fd(philo_id, 1);
-	write(1, str, size);
-	write(1, "\n", 1);
-	pthread_mutex_unlock(&data->write_mutex);
+	print_log(philo_id, str, philo->data);
 	return (0);
 }
 
@@ -128,7 +96,7 @@ int	check_stop(t_philo *philo)
 	if (philo->data->stop == 1)
 	{
 		pthread_mutex_unlock(&philo->data->stop_mutex);
-        return (-1);
+		return (-1);
 	}
 	pthread_mutex_unlock(&philo->data->stop_mutex);
 	return (0);

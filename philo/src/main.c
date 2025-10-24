@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/23 16:45:25 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/24 17:04:11 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,27 @@
 
 void	*routine(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	if (philo->philo_id % 2 == 0)
 		usleep(1000);
-	pthread_mutex_lock(&philo->data->stop_mutex);
-	while (philo->data->stop == 0)
+	while (check_stop(philo) == 0)
 	{
-		pthread_mutex_unlock(&philo->data->stop_mutex);
-		if (check_stop(philo) == -1)
-			return (NULL);
 		eating(philo);
 		if (check_stop(philo) == -1)
 			return (NULL);
 		print_log(philo->philo_id + 1, " is sleeping", philo->data);
 		if (check_stop(philo) == -1)
 			return (NULL);
-		usleep(philo->data->time_to_sleep * 1000);
+		if (smart_sleep(philo, philo->data->time_to_sleep) == 1)
+			return (NULL);
 		if (check_stop(philo) == -1)
 			return (NULL);
 		print_log(philo->philo_id + 1, " is thinking", philo->data);
 		if (philo->data->nr_philos % 2 != 0 && philo->philo_id % 2 != 0)
-			usleep(1000);
-		pthread_mutex_lock(&philo->data->stop_mutex);
+			usleep((philo->data->time_to_eat * 1000) / 2);
 	}
-	pthread_mutex_unlock(&philo->data->stop_mutex);
 	return (NULL);
 }
 
@@ -69,7 +64,7 @@ int	main(int ac, char **av)
 {
 	t_data	data;
 	int		error_result;
-	
+
 	if (ac < 5 || ac > 6)
 		return (write(2, "Error. Needs 4 or 5 args.\n", 26));
 	error_result = handle_args(ac, av, &data);
@@ -80,4 +75,3 @@ int	main(int ac, char **av)
 	handle_threads(&data);
 	return (0);
 }
- 

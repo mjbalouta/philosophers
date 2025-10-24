@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:33:24 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/23 16:35:52 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:45:37 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_data
 	long			start_time;	
 }				t_data;
 
-
 typedef struct s_philo
 {
 	int				right_fork;
@@ -44,7 +43,7 @@ typedef struct s_philo
 	long			last_meal;
 	int				ate;
 	t_data			*data;
-	
+
 }				t_philo;
 
 int		init_data(char **av, t_data *data);
@@ -52,7 +51,7 @@ int		handle_args(int ac, char **av, t_data *data);
 long	ft_atoi(const char *nptr);
 void	ft_putnbr_fd(int n, int fd);
 size_t	ft_strlen(const char *s);
-int		check_and_print_log(int philo_id, char *str, t_philo *philo);
+int		check_and_print(int philo_id, char *str, t_philo *philo);
 int		print_log(int philo_id, char *str, t_data *data);
 int		detect_invalid_char(int ac, char **av);
 int		handle_threads(t_data *data);
@@ -62,9 +61,14 @@ void	*monitoring(void *arg);
 void	free_data(t_data *data);
 int		create_mutexes(t_data *data, t_philo *philos);
 void	destroy_mutexes(t_data *data, t_philo *philos);
-int		create_threads(t_data *data, t_philo *philos, pthread_t	*ids, pthread_t *mon_id);
+int		create_threads(t_data *data, t_philo *philos, pthread_t	*ids,
+			pthread_t *mon_id);
 void	join_threads(t_data *data, pthread_t *ids, pthread_t *mon_id);
 int		check_stop(t_philo *philo);
-long	get_timestamp();
+long	get_timestamp(void);
+int		smart_sleep(t_philo *philo, long sleep_time);
+int		verify_if_all_ate(t_philo *philo);
+int		handle_multi_philos(t_philo *philo);
+int		handle_single_philo(t_philo *philo);
 
 #endif

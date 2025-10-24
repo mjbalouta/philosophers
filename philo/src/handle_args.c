@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:13:34 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/23 12:31:46 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:46:19 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	init_data(char **av, t_data *data)
 	}
 	else
 		data->nr_meals = 0;
-	if (data->time_to_eat < 0 || data->time_to_sleep < 0 || data->meals_defined < 0)
+	if (data->time_to_eat < 0 || data->time_to_sleep < 0
+		|| data->meals_defined < 0)
 		return (-1);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
 	if (!data->forks)
@@ -51,7 +52,7 @@ int	detect_invalid_char(int ac, char **av)
 		{
 			if (!(av[i][z] >= '0' && av[i][z] <= '9'))
 				return (-1);
-			z++;  
+			z++;
 		}
 		i++;
 	}
@@ -61,7 +62,7 @@ int	detect_invalid_char(int ac, char **av)
 int	handle_args(int ac, char **av, t_data *data)
 {
 	int	error;
-	
+
 	if (detect_invalid_char(ac, av) == -1)
 		return (-1);
 	error = init_data(av, data);

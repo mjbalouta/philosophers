@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/22 11:52:03 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/23 16:18:48 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:47:41 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	create_mutexes(t_data *data, t_philo *philos)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < data->nr_philos)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 			return (write(2, "Mutex error.\n", 13));
-		i++;	
+		i++;
 	}
 	if (pthread_mutex_init(&data->write_mutex, NULL) != 0)
 		return (write(2, "Mutex error.\n", 13));
@@ -37,7 +37,8 @@ int	create_mutexes(t_data *data, t_philo *philos)
 	return (0);
 }
 
-int	create_threads(t_data *data, t_philo *philos, pthread_t *ids, pthread_t *mon_id)
+int	create_threads(t_data *data, t_philo *philos, pthread_t *ids,
+					pthread_t *mon_id)
 {
 	int	i;
 
@@ -78,7 +79,7 @@ void	join_threads(t_data *data, pthread_t *ids, pthread_t *mon_id)
 void	destroy_mutexes(t_data *data, t_philo *philos)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < data->nr_philos)
 	{
