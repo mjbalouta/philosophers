@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 15:13:34 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/24 16:46:19 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:04:47 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ int	init_data(char **av, t_data *data)
 	{
 		data->meals_defined = 1;
 		data->nr_meals = ft_atoi(av[5]);
+		if (data->nr_meals == 0)
+			data->nr_meals = -1;
 	}
 	else
 		data->nr_meals = 0;
-	if (data->time_to_eat < 0 || data->time_to_sleep < 0
-		|| data->meals_defined < 0)
+	if (data->time_to_eat <= 0 || data->time_to_sleep <= 0
+		|| data->nr_meals < 0)
 		return (-1);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nr_philos);
 	if (!data->forks)

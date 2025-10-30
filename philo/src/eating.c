@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 20:50:10 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/24 16:50:56 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/27 15:13:53 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handle_single_philo(t_philo *philo)
 		pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
 		print_log(philo->philo_id + 1, " has taken a fork", philo->data);
 		pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
-		usleep(philo->data->time_to_die * 1000);
+		smart_sleep(philo, philo->data->time_to_die * 1000);
 		pthread_mutex_lock(&philo->data->stop_mutex);
 		philo->data->stop = 1;
 		pthread_mutex_unlock(&philo->data->stop_mutex);

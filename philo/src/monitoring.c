@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 16:14:53 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/24 16:49:37 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/27 14:36:01 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_if_time_to_die(long time_passed, t_philo *philo)
 		pthread_mutex_lock(&philo->data->stop_mutex);
 		philo[0].data->stop = 1;
 		pthread_mutex_unlock(&philo->data->stop_mutex);
-		print_log(philo->philo_id + 1, "\e[0;31m died", philo->data);
+		print_log(philo->philo_id + 1, " died", philo->data);
 		return (1);
 	}
 	return (0);

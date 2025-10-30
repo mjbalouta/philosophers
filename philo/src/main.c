@@ -6,7 +6,7 @@
 /*   By: mjoao-fr <mjoao-fr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 15:34:05 by mjoao-fr          #+#    #+#             */
-/*   Updated: 2025/10/24 17:04:11 by mjoao-fr         ###   ########.fr       */
+/*   Updated: 2025/10/27 10:48:02 by mjoao-fr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	handle_threads(t_data *data)
 		return (-2);
 	join_threads(data, ids, &mon_id);
 	destroy_mutexes(data, philos);
+	free(ids);
 	free(philos);
+	free(data->forks);
 	return (0);
 }
 
